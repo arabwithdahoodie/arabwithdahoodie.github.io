@@ -1,0 +1,787 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playroom 🎮 — Discover Your Next Game</title>
+
+<style>
+:root {
+  --pink: #e957a5;
+  --pink-dark: #c83d89;
+  --pink-light: #ffe3f1;
+  --purple: #a98be8;
+  --text: #38263e;
+  --muted: #806d87;
+  --bg: #fff8fc;
+  --white: #ffffff;
+  --shadow: 0 6px 24px rgba(135, 79, 126, .10);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button, input, select { font: inherit; }
+
+button { cursor: pointer; }
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 17px 6%;
+  background: rgba(255,255,255,.96);
+  border-bottom: 1px solid #f5dce9;
+  backdrop-filter: blur(12px);
+}
+
+.logo {
+  color: var(--pink);
+  font-size: 27px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  white-space: nowrap;
+}
+
+nav {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+nav a:hover { color: var(--pink); }
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 78px 20px 70px;
+  text-align: center;
+  background: linear-gradient(130deg, #ffe2f0, #f1e6ff, #ffeaf4);
+}
+
+.hero::before, .hero::after {
+  position: absolute;
+  font-size: 75px;
+  opacity: .25;
+  pointer-events: none;
+}
+
+.hero::before {
+  content: "✦";
+  left: 10%;
+  top: 20%;
+}
+
+.hero::after {
+  content: "♡";
+  right: 11%;
+  bottom: 13%;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: auto;
+}
+
+.eyebrow {
+  display: inline-block;
+  padding: 8px 14px;
+  background: rgba(255,255,255,.75);
+  border-radius: 30px;
+  color: var(--pink-dark);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 18px 0;
+  font-size: clamp(38px, 7vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -2px;
+}
+
+.gradient-text {
+  color: var(--pink);
+}
+
+.hero p {
+  max-width: 540px;
+  margin: 0 auto;
+  color: #705c79;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.search-wrap {
+  max-width: 570px;
+  margin: 28px auto 0;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 19px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 18px 20px 18px 52px;
+  border: 2px solid transparent;
+  border-radius: 18px;
+  background: white;
+  outline: none;
+  box-shadow: 0 10px 30px rgba(130, 69, 121, .13);
+  transition: border .2s;
+}
+
+#searchInput:focus { border-color: var(--pink); }
+
+.search-hint {
+  margin-top: 12px;
+  color: #806d87;
+  font-size: 12px;
+}
+
+main {
+  width: min(1250px, 100%);
+  margin: auto;
+  padding: 44px 24px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 29px;
+  letter-spacing: -.8px;
+}
+
+.section-heading p {
+  color: var(--muted);
+  margin: 8px 0 0;
+  font-size: 14px;
+}
+
+#catalogCount {
+  color: var(--pink-dark);
+  background: #ffe5f2;
+  padding: 9px 13px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.filters {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin: 25px 0 20px;
+}
+
+.filter {
+  padding: 10px 14px;
+  border: 1px solid #f0dce9;
+  border-radius: 30px;
+  background: white;
+  color: #745c7b;
+  font-size: 13px;
+  font-weight: bold;
+  transition: .2s;
+}
+
+.filter:hover {
+  border-color: var(--pink);
+  transform: translateY(-1px);
+}
+
+.filter.active {
+  background: var(--pink);
+  border-color: var(--pink);
+  color: white;
+  box-shadow: 0 4px 12px rgba(233, 87, 165, .22);
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 13px 0 19px;
+}
+
+#showingCount {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+#sortSelect {
+  padding: 10px 13px;
+  border: 1px solid #efdce9;
+  border-radius: 12px;
+  background: white;
+  color: var(--text);
+  outline: none;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 19px;
+}
+
+.game-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #f2e4ef;
+  border-radius: 19px;
+  background: white;
+  box-shadow: var(--shadow);
+  transition: transform .22s, box-shadow .22s;
+  animation: appear .3s ease both;
+}
+
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 13px 30px rgba(135, 79, 126, .16);
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.game-cover {
+  position: relative;
+  display: flex;
+  height: 135px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ffdfef, #e8dcff);
+}
+
+.game-cover::before {
+  content: "";
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 50%;
+}
+
+.game-cover::after {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 50%;
+}
+
+.game-symbol {
+  position: relative;
+  z-index: 1;
+  font-size: 52px;
+  filter: drop-shadow(0 5px 5px rgba(70,35,75,.12));
+  transition: transform .25s;
+}
+
+.game-card:hover .game-symbol {
+  transform: scale(1.12) rotate(-4deg);
+}
+
+.game-info { padding: 15px; }
+
+.game-info h3 {
+  margin: 0 0 9px;
+  font-size: 16px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.game-category {
+  display: inline-block;
+  color: var(--pink-dark);
+  background: #fff0f7;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.game-link {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 10px 13px;
+  border-radius: 10px;
+  background: #fff0f7;
+  color: var(--pink-dark);
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: .2s;
+}
+
+.game-link:hover {
+  background: var(--pink);
+  color: white;
+}
+
+#emptyState {
+  display: none;
+  padding: 55px 15px;
+  text-align: center;
+  border: 1px dashed #eac9df;
+  border-radius: 20px;
+  background: white;
+}
+
+#emptyState .emoji { font-size: 45px; }
+
+#emptyState h3 { margin-bottom: 8px; }
+
+#emptyState p { color: var(--muted); }
+
+#loadMore {
+  display: block;
+  margin: 32px auto 0;
+  padding: 14px 23px;
+  border: none;
+  border-radius: 13px;
+  background: var(--pink);
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 6px 16px rgba(233,87,165,.22);
+  transition: .2s;
+}
+
+#loadMore:hover {
+  background: var(--pink-dark);
+  transform: translateY(-2px);
+}
+
+#loadMore:disabled {
+  opacity: .55;
+  cursor: default;
+  transform: none;
+}
+
+.about {
+  margin-top: 75px;
+  padding: 38px;
+  border: 1px solid #f2dfed;
+  border-radius: 25px;
+  background: linear-gradient(135deg, white, #fff0f8);
+}
+
+.about h2 {
+  margin-top: 0;
+  font-size: 28px;
+}
+
+.about p {
+  max-width: 760px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.about-stats {
+  display: flex;
+  gap: 35px;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.stat strong {
+  display: block;
+  color: var(--pink-dark);
+  font-size: 24px;
+}
+
+.stat span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+footer {
+  margin-top: 35px;
+  padding: 28px 20px;
+  background: #ffebf5;
+  text-align: center;
+  color: #806d87;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+footer strong { color: var(--pink-dark); }
+
+@media (max-width: 1000px) {
+  .game-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 700px) {
+  header { padding: 15px 5%; }
+  .logo { font-size: 23px; }
+  nav { gap: 13px; }
+  nav a { font-size: 12px; }
+  .hero { padding: 60px 18px; }
+  main { padding: 32px 16px; }
+  .game-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .game-cover { height: 110px; }
+  .game-symbol { font-size: 43px; }
+  .game-info { padding: 12px; }
+  .game-info h3 { font-size: 14px; }
+  .section-heading h2 { font-size: 24px; }
+  .about { padding: 24px; }
+}
+
+@media (max-width: 380px) {
+  .game-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="#" class="logo" style="text-decoration:none;">🎮 Playroom</a>
+  <nav>
+    <a href="#games">Explore Games</a>
+    <a href="#about">About</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <span class="eyebrow">♡ Your cozy gaming corner ♡</span>
+    <h1>Find Your Next<br><span class="gradient-text">Favorite Game.</span></h1>
+    <p>From epic adventures to cozy little worlds, discover your next obsession in one cute place.</p>
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input id="searchInput" type="search" placeholder="Search games, genres, adventures..." autocomplete="off">
+    </div>
+    <div class="search-hint">A whole universe of games, waiting for you ✨</div>
+  </div>
+</section>
+
+<main>
+  <section id="games">
+    <div class="section-heading">
+      <div>
+        <h2>Explore the collection <span>💗</span></h2>
+        <p>Pick a vibe. Find a game. Start your next adventure.</p>
+      </div>
+      <span id="catalogCount">Loading games...</span>
+    </div>
+
+    <div class="filters" id="filters">
+      <button class="filter active" data-category="All">✨ All Games</button>
+      <button class="filter" data-category="Action & Shooter">🔫 Action</button>
+      <button class="filter" data-category="RPG & Fantasy">🐉 RPG</button>
+      <button class="filter" data-category="Open World">🌍 Open World</button>
+      <button class="filter" data-category="Strategy & Tactics">🧠 Strategy</button>
+      <button class="filter" data-category="Indie & Platformer">🎨 Indie</button>
+      <button class="filter" data-category="Simulation & Building">🏡 Simulation</button>
+      <button class="filter" data-category="Racing & Sports">🏎️ Racing</button>
+      <button class="filter" data-category="Horror & Survival">👻 Horror</button>
+      <button class="filter" data-category="Party & Multiplayer">🎉 Party</button>
+      <button class="filter" data-category="MMO & Online">🌐 Online</button>
+      <button class="filter" data-category="Classics & Nintendo">🍄 Classics</button>
+      <button class="filter" data-category="Creative & Sandbox">🧱 Sandbox</button>
+    </div>
+
+    <div class="toolbar">
+      <span id="showingCount">Loading collection...</span>
+      <select id="sortSelect" aria-label="Sort games">
+        <option value="default">Default order</option>
+        <option value="az">Name: A–Z</option>
+        <option value="za">Name: Z–A</option>
+      </select>
+    </div>
+
+    <div class="game-grid" id="gameGrid"></div>
+
+    <div id="emptyState">
+      <div class="emoji">🥺</div>
+      <h3>No games found!</h3>
+      <p>Try another search or choose a different category.</p>
+      <button class="filter active" id="resetSearch">Show all games</button>
+    </div>
+
+    <button id="loadMore">Show more games ↓</button>
+  </section>
+
+  <section class="about" id="about">
+    <h2>A little about Playroom 💕</h2>
+    <p>
+      Welcome to Playroom, your cozy corner of the gaming universe!
+      Browse a huge collection of games, discover new genres, and find
+      something that matches your mood. Whether you love action, fantasy,
+      building, racing, or relaxing adventures, there's something here for you.
+    </p>
+    <div class="about-stats">
+      <div class="stat"><strong id="totalStat">300+</strong><span>Games to discover</span></div>
+      <div class="stat"><strong>12</strong><span>Genres to explore</span></div>
+      <div class="stat"><strong>∞</strong><span>New adventures</span></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>🎮 Playroom</strong><br>
+  Made with ♡ for gamers everywhere.<br>
+  Fan-made game discovery website. Game names belong to their respective owners.
+</footer>
+
+<script>
+const gameGroups = {
+  "Action & Shooter": `
+Fortnite|VALORANT|Counter-Strike 2|Apex Legends|Overwatch 2|Call of Duty|Call of Duty: Modern Warfare II|Call of Duty: Modern Warfare III|Call of Duty: Black Ops 6|Rainbow Six Siege|PUBG: Battlegrounds|Destiny 2|The Finals|Battlefield 2042|Titanfall 2|Halo Infinite|DOOM Eternal|Wolfenstein II|Metro Exodus|Borderlands 3|Far Cry 6|Crysis Remastered|Escape from Tarkov|Warframe|Team Fortress 2|Left 4 Dead 2|Back 4 Blood|Paladins|Marvel Rivals|BattleBit Remastered|DOOM (2016)|Half-Life 2|Black Mesa|Prey|Sniper Elite 5|Hitman: World of Assassination|The Division 2|Tom Clancy's Ghost Recon Wildlands|The First Descendant|Helldivers 2|Deep Rock Galactic|Ready or Not|Insurgency: Sandstorm|Killing Floor 2|Payday 2|Payday 3|Shadow Warrior 3|Serious Sam 4|Roboquest|Ultrakill|Metal: Hellsinger
+`,
+  "RPG & Fantasy": `
+Elden Ring|Baldur's Gate 3|The Elder Scrolls V: Skyrim|The Witcher 3|Cyberpunk 2077|Final Fantasy VII Rebirth|Final Fantasy XIV|Persona 5 Royal|Dragon Age: Inquisition|Dragon's Dogma 2|Kingdom Hearts III|Diablo IV|Path of Exile 2|Monster Hunter: World|Monster Hunter Rise|Black Myth: Wukong|Lies of P|Sekiro: Shadows Die Twice|Dark Souls III|NieR: Automata|Starfield|Mass Effect Legendary Edition|Divinity: Original Sin 2|Octopath Traveler II|Xenoblade Chronicles 3|Tales of Arise|Tales of Berseria|Ys VIII: Lacrimosa of Dana|GreedFall|Kingdoms of Amalur: Re-Reckoning|Dragon Age: Origins|Dragon Age: The Veilguard|Dark Souls Remastered|Bloodborne|Demon's Souls|The Surge 2|Remnant II|Outward|Final Fantasy XV|Final Fantasy XVI|Persona 3 Reload|Persona 4 Golden|Dragon Quest XI S|Ni no Kuni: Wrath of the White Witch|Sea of Stars|Chained Echoes|The Legend of Heroes: Trails of Cold Steel|Fire Emblem: Three Houses|Pillars of Eternity II|Wasteland 3|Pathfinder: Wrath of the Righteous
+`,
+  "Open World": `
+Red Dead Redemption 2|Grand Theft Auto V|Grand Theft Auto: San Andreas|Grand Theft Auto IV|The Legend of Zelda: Tears of the Kingdom|The Legend of Zelda: Breath of the Wild|Horizon Forbidden West|Horizon Zero Dawn|Ghost of Tsushima|Assassin's Creed Valhalla|Assassin's Creed Odyssey|Assassin's Creed Mirage|Watch Dogs 2|Sleeping Dogs|Days Gone|Death Stranding|No Man's Sky|The Outer Worlds|Kingdom Come: Deliverance II|Mad Max|Just Cause 3|Just Cause 4|Yakuza: Like a Dragon|Like a Dragon: Infinite Wealth|Marvel's Spider-Man Remastered|Marvel's Spider-Man: Miles Morales|Saints Row: The Third|Saints Row IV|Mafia: Definitive Edition|Mafia II|L.A. Noire|Bully|Prototype|Prototype 2|Sunset Overdrive|Immortals Fenyx Rising|Far Cry 3|Far Cry 4|Far Cry 5|Watch Dogs: Legion|Tom Clancy's The Division|Metal Gear Solid V|Deathloop|Control|Alan Wake 2|Quantum Break|Batman: Arkham Knight|Batman: Arkham City|Middle-earth: Shadow of Mordor|Middle-earth: Shadow of War|The Saboteur
+`,
+  "Strategy & Tactics": `
+Civilization VI|Civilization VII|Age of Empires II: Definitive Edition|Age of Empires IV|StarCraft II|Warcraft III: Reforged|Total War: Warhammer III|Crusader Kings III|Europa Universalis IV|Hearts of Iron IV|Cities: Skylines|Cities: Skylines II|XCOM 2|Company of Heroes 3|Command & Conquer Remastered|RimWorld|Factorio|Against the Storm|Frostpunk|Frostpunk 2|Stellaris|Anno 1800|Northgard|Into the Breach|Slay the Spire|Teamfight Tactics|Dota 2|League of Legends|Bloons TD 6|Plants vs. Zombies|They Are Billions|Battle Brothers|Wargroove 2|Advance Wars 1+2: Re-Boot Camp|Total War: Three Kingdoms|Total War: Rome II|Total War: Shogun 2|Supreme Commander|Planetary Annihilation|Command & Conquer: Generals|The Battle for Middle-earth II|Desperados III|Shadow Tactics: Blades of the Shogun|Tropico 6|Surviving the Aftermath|Oxygen Not Included|Prison Architect|Invisible, Inc.|Bad North|Mini Motorways|Mini Metro|Dorfromantik
+`,
+  "Indie & Platformer": `
+Hollow Knight|Hollow Knight: Silksong|Celeste|Cuphead|Hades|Hades II|Dead Cells|The Binding of Isaac: Rebirth|Undertale|Deltarune|Stardew Valley|Terraria|Dave the Diver|Cult of the Lamb|Pizza Tower|Ori and the Blind Forest|Ori and the Will of the Wisps|Shovel Knight: Treasure Trove|A Short Hike|Spiritfarer|The Messenger|Katana ZERO|Limbo|Inside|Little Nightmares|Little Nightmares II|Geometry Dash|Balatro|Vampire Survivors|Risk of Rain 2|Enter the Gungeon|Inscryption|Disco Elysium|Outer Wilds|Return of the Obra Dinn|Chants of Sennaar|The Talos Principle 2|Portal|Portal 2|The Stanley Parable: Ultra Deluxe|Papers, Please|A Little to the Left|Unpacking|Braid: Anniversary Edition|Fez|Cookie Clicker|The Walking Dead: The Telltale Series|A Hat in Time|Super Meat Boy|The End Is Nigh|Blasphemous|Blasphemous 2|Gris|Neva|Tunic|Death's Door|Hyper Light Drifter|CrossCode|To the Moon|OneShot|Undertale Yellow|Omori|Night in the Woods|Oxenfree|Oxenfree II|What Remains of Edith Finch|Gone Home|The Beginner's Guide|Firewatch|Journey|Abzu|The Pathless|The Witness|Baba Is You|Humanity|Viewfinder|Cocoon|Animal Well|Thank Goodness You're Here!|Balatro
+`,
+  "Simulation & Building": `
+The Sims 4|The Sims 3|Planet Zoo|Planet Coaster 2|RollerCoaster Tycoon Classic|Two Point Hospital|Two Point Campus|House Flipper 2|PowerWash Simulator|Euro Truck Simulator 2|American Truck Simulator|Microsoft Flight Simulator|Farming Simulator 25|PC Building Simulator 2|Gas Station Simulator|Supermarket Simulator|Car Mechanic Simulator 2021|Game Dev Tycoon|Prison Architect|Project Hospital|Surviving Mars|Oxygen Not Included|Kerbal Space Program|Kerbal Space Program 2|The Sims Medieval|Cities in Motion 2|Parkitect|Transport Fever 2|OpenTTD|Satisfactory|Valheim|Palworld|Grounded|Astroneer|Raft|Scrap Mechanic|Besiege|Trailmakers|Space Engineers|Empyrion: Galactic Survival|Medieval Dynasty|My Time at Sandrock|Coral Island|Dinkum|Disney Dreamlight Valley|Palia|Slime Rancher 2|PowerWash Simulator 2|Thief Simulator|Thief Simulator 2|House Flipper|Planet Zoo: Deluxe Edition|Big Ambitions|Fabledom|Against the Storm|Timberborn|Foundation|Manor Lords|Workers & Resources: Soviet Republic|Hydroneer|Train Sim World 4|Train Sim World 5|Farming Simulator 22|Farming Simulator 19|Airport CEO|Let's Build a Zoo|Megaquarium|Jurassic World Evolution 2|Zoo Tycoon: Ultimate Animal Collection
+`,
+  "Racing & Sports": `
+Mario Kart 8 Deluxe|Forza Horizon 5|Forza Motorsport|Gran Turismo 7|Need for Speed Unbound|Need for Speed Heat|The Crew Motorfest|F1 25|Assetto Corsa Competizione|iRacing|DiRT Rally 2.0|EA Sports FC 25|EA Sports FC 26|eFootball|NBA 2K25|NBA 2K26|WWE 2K25|Tony Hawk's Pro Skater 1 + 2|Riders Republic|Steep|PGA Tour 2K25|Hot Wheels Unleashed 2|Wreckfest|SnowRunner|BeamNG.drive|CarX Drift Racing Online|Trackmania|Football Manager 2024|Tekken 8|Street Fighter 6|Mortal Kombat 1|Guilty Gear Strive|The King of Fighters XV|Rocket League|F1 Manager 2024|F1 24|F1 23|Need for Speed Payback|Need for Speed Most Wanted|Burnout Paradise Remastered|Dirt 5|WRC Generations|EA Sports UFC 5|Session: Skate Sim|Skater XL|OlliOlli World|Riders Republic|Descenders|Lonely Mountains: Downhill|Super Mega Baseball 4|Cricket 24|TopSpin 2K25|PGA Tour 2K23|RIDE 5|MotoGP 24|NASCAR 25|The Crew 2|Art of Rally|GRID Legends
+`,
+  "Horror & Survival": `
+Subnautica|Subnautica: Below Zero|Resident Evil 4|Resident Evil Village|Resident Evil 2|Silent Hill 2|Dead by Daylight|Phasmophobia|Outlast|Outlast 2|Amnesia: The Dark Descent|Amnesia: The Bunker|Alien: Isolation|The Forest|Sons of the Forest|Green Hell|Don't Starve Together|Project Zomboid|7 Days to Die|The Long Dark|Dying Light|Dying Light 2|The Evil Within|The Evil Within 2|Darkwood|The Quarry|Until Dawn|SOMA|Layers of Fear|The Mortuary Assistant|Fears to Fathom|This War of Mine|Alan Wake Remastered|Little Nightmares III|Five Nights at Freddy's|Five Nights at Freddy's: Security Breach|Bendy and the Ink Machine|Bendy and the Dark Revival|Poppy Playtime|Granny|Pacify|Visage|MADiSON|The Medium|Tormented Souls|Signalis|Crow Country|Still Wakes the Deep|Killer Frequency|Dark Pictures: Man of Medan|Dark Pictures: House of Ashes|Dark Pictures: The Devil in Me|The Walking Dead: Saints & Sinners|The Callisto Protocol|Dead Space Remake|World War Z|Days Gone|The Last of Us Part I|The Last of Us Part II Remastered
+`,
+  "Party & Multiplayer": `
+Among Us|Fall Guys|Party Animals|Lethal Company|Content Warning|Gang Beasts|Human: Fall Flat|Moving Out 2|Overcooked 2|Keep Talking and Nobody Explodes|Pummel Party|The Jackbox Party Pack 9|The Jackbox Party Pack 7|Ultimate Chicken Horse|Golf With Your Friends|It Takes Two|A Way Out|We Were Here|We Were Here Together|PlateUp!|Brawlhalla|MultiVersus|Super Smash Bros. Ultimate|Mario Party Superstars|Pico Park|Rocket League|Sea of Thieves|Minecraft|Roblox|Garry's Mod|Left 4 Dead 2|Party Golf|Boomerang Fu|Unrailed!|Unrailed 2: Back on Track|Tricky Towers|Duck Game|SpeedRunners|TowerFall Ascension|Stick Fight: The Game|Castle Crashers|BattleBlock Theater|Lovers in a Dangerous Spacetime|KeyWe|Tools Up!|Totally Reliable Delivery Service|Human Fall Flat 2|Ultimate Fishing Simulator|Tabletop Simulator|Board Game Arena|Golf It!|Jackbox Party Pack 10|Mario Kart 8 Deluxe|Nintendo Switch Sports|Super Mario Party Jamboree|Chained Together|R.E.P.O.|Escape Simulator
+`,
+  "MMO & Online": `
+World of Warcraft|Guild Wars 2|The Elder Scrolls Online|Black Desert Online|Lost Ark|New World|RuneScape|Old School RuneScape|EVE Online|Star Wars: The Old Republic|Throne and Liberty|War Thunder|World of Tanks|World of Warships|Albion Online|MapleStory|Neverwinter|Phantasy Star Online 2: New Genesis|DC Universe Online|Fallout 76|ARK: Survival Ascended|DayZ|Conan Exiles|Enshrouded|Honkai: Star Rail|Honkai Impact 3rd|Zenless Zone Zero|Wuthering Waves|Tower of Fantasy|Final Fantasy XIV|The Lord of the Rings Online|Dungeons & Dragons Online|Palia|Sky: Children of the Light|Warframe|Destiny 2|Genshin Impact|Once Human|Star Trek Online|Vindictus|TERA|Aion Classic|Flyff Universe|AdventureQuest 3D|Mabinogi|Ragnarok Online|Dofus|Wakfu|Crossout|Foxhole|Planetside 2|MechWarrior Online|Mortal Online 2
+`,
+  "Classics & Nintendo": `
+Super Mario Odyssey|Super Mario Bros. Wonder|Super Mario 64|The Legend of Zelda: Ocarina of Time|Pokémon Scarlet|Pokémon Violet|Pokémon Legends: Arceus|Pokémon Sword|Animal Crossing: New Horizons|Splatoon 3|Metroid Dread|Kirby and the Forgotten Land|Donkey Kong Country: Tropical Freeze|Luigi's Mansion 3|Pikmin 4|Fire Emblem: Three Houses|Xenoblade Chronicles: Definitive Edition|The Legend of Zelda: Link's Awakening|Sonic Mania|Sonic Frontiers|Crash Bandicoot N. Sane Trilogy|Spyro Reignited Trilogy|Rayman Legends|Mega Man 11|Tetris Effect: Connected|Pokémon Brilliant Diamond|Pokémon Shining Pearl|Pokémon Let's Go Pikachu|Pokémon Mystery Dungeon: Rescue Team DX|Super Mario Maker 2|New Super Mario Bros. U Deluxe|Yoshi's Crafted World|Kirby Star Allies|Metroid Prime Remastered|Donkey Kong Country Returns HD|Paper Mario: The Thousand-Year Door|Mario + Rabbids Kingdom Battle|Mario + Rabbids Sparks of Hope|Captain Toad: Treasure Tracker|WarioWare: Get It Together!|Nintendo Switch Sports|Clubhouse Games: 51 Worldwide Classics|Sonic Origins|Sonic Superstars|Crash Bandicoot 4: It's About Time|Spyro the Dragon|Banjo-Kazooie|GoldenEye 007|Tetris|Pac-Man Championship Edition 2|Street Fighter 30th Anniversary Collection|Castlevania Anniversary Collection|Contra Anniversary Collection
+`,
+  "Creative & Sandbox": `
+Minecraft|Roblox|Garry's Mod|Dreams|LittleBigPlanet 3|Core Keeper|LEGO Fortnite|Besiege|Trailmakers|Space Engineers|Scrap Mechanic|Satisfactory|Factorio|Terraria|Starbound|Creativerse|Vintage Story|Eco|Vintage Story|Teardown|People Playground|Universe Sandbox|Kerbal Space Program|Planet Crafter|Dyson Sphere Program|Shapez 2|Poly Bridge 3|Townscaper|Tiny Glade|House Builder|Brick Rigs|Stormworks: Build and Rescue|From the Depths|SimplePlanes|Flyout|Main Assembly|TerraTech|TerraTech Worlds|Astroneer|No Man's Sky|Space Haven|Starbound|Core Keeper|Dragon Quest Builders 2|LEGO Worlds|LEGO Fortnite Odyssey|Scrap Mechanic Survival|Trailmakers: Airborne|WorldBox|Melon Playground|GMod Sandbox|Blockland
+`
+};
+
+const categoryInfo = {
+  "Action & Shooter": { icon: "🔫", colors: ["#ffe0e7", "#ffc8d8"] },
+  "RPG & Fantasy": { icon: "🐉", colors: ["#e7ddff", "#cfc0ff"] },
+  "Open World": { icon: "🌍", colors: ["#d9f4e4", "#bce9d1"] },
+  "Strategy & Tactics": { icon: "🧠", colors: ["#fff0c9", "#ffe0a2"] },
+  "Indie & Platformer": { icon: "🎨", colors: ["#ffe1f1", "#ffd0e8"] },
+  "Simulation & Building": { icon: "🏡", colors: ["#dff4ff", "#c5e8ff"] },
+  "Racing & Sports": { icon: "🏎️", colors: ["#ffe3d6", "#ffcbb8"] },
+  "Horror & Survival": { icon: "👻", colors: ["#e6def0", "#cfc4df"] },
+  "Party & Multiplayer": { icon: "🎉", colors: ["#ffdfed", "#ffc7e1"] },
+  "MMO & Online": { icon: "🌐", colors: ["#dceaff", "#c7d9ff"] },
+  "Classics & Nintendo": { icon: "🍄", colors: ["#ffe7cb", "#ffd5aa"] },
+  "Creative & Sandbox": { icon: "🧱", colors: ["#e4f5d9", "#cce9bc"] }
+};
+
+const games = [];
+const seen = new Set();
+
+Object.entries(gameGroups).forEach(([category, list]) => {
+  list.trim().split("|").map(name => name.trim()).filter(Boolean).forEach(title => {
+    const key = title.toLowerCase();
+    if (!seen.has(key)) {
+      seen.add(key);
+      games.push({ title, category });
+    }
+  });
+});
+
+const grid = document.getElementById("gameGrid");
+const searchInput = document.getElementById("searchInput");
+const filters = document.getElementById("filters");
+const sortSelect = document.getElementById("sortSelect");
+const catalogCount = document.getElementById("catalogCount");
+const showingCount = document.getElementById("showingCount");
+const emptyState = document.getElementById("emptyState");
+const loadMore = document.getElementById("loadMore");
+const resetSearch = document.getElementById("resetSearch");
+
+let activeCategory = "All";
+let visibleLimit = 24;
+
+function getFilteredGames() {
+  const query = searchInput.value.trim().toLowerCase();
+
+  let result = games.filter(game => {
+    const matchesCategory =
+      activeCategory === "All" || game.category === activeCategory;
+
+    const matchesSearch =
+      game.title.toLowerCase().includes(query) ||
+      game.category.toLowerCase().includes(query);
+
+    return matchesCategory && matchesSearch;
+  });
+
+  if (sortSelect.value === "az") {
+    result.sort((a, b) => a.title.localeCompare(b.title));
+  } else if (sortSelect.value === "za") {
+    result.sort((a, b) => b.title.localeCompare(a.title));
+  }
+
+  return result;
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+function makeCard(game, index) {
+  const info = categoryInfo[game.category] || {
+    icon: "🎮",
+    colors: ["#ffe1f1", "#e8dcff"]
+  };
+
+  const searchURL =
+    "https://www.google.com/search?q=" +
+    encodeURIComponent(game.title + " official game");
+
+  return `
+    <article class="game-card" style="animation-delay:${Math.min(index * 0.015, 0.3)}s">
+      <div class="game-cover" style="background:linear-gradient(135deg,${info.colors[0]},${info.colors[1]})">
+        <span class="game-symbol">${info.icon}</span>
+      </div>
+      <div class="game-info">
+        <h3>${escapeHTML(game.title)}</h3>
+        <span class="game-category">${escapeHTML(game.category)}</span>
+        <br>
+        <a class="game-link" href="${searchURL}" target="_blank" rel="noopener noreferrer">
+          Discover game ↗
+        </a>
+      </div>
+    </article>
+  `;
+}
+
+function renderGames() {
+  const result = getFilteredGames();
+  const visibleGames = result.slice(0, visibleLimit);
+
+  grid.innerHTML = visibleGames.map(makeCard).join("");
+
+  catalogCount.textContent = games.length + " games";
+  showingCount.textContent =
+    result.length === 0
+      ? "No games to show"
+      : "Showing " + visibleGames.length + " of " + result.length + " games";
+
+  emptyState.style.display = result.length === 0 ? "block" : "none";
+  grid.style.display = result.length === 0 ? "none" : "grid";
+
+  loadMore.style.display =
+    result.length > visibleLimit ? "block" : "none";
+
+  if (result.length > visibleLimit) {
+    loadMore.textContent = "Show more games ↓";
+    loadMore.disabled = false;
+  } else if (result.length > 0) {
+    loadMore.textContent = "You've seen them all ✨";
+    loadMore.disabled = true;
+  }
+
+  document.getElementById("totalStat").textContent = games.length + "+";
+}
+
+filters.addEventListener("click", event => {
+  const button = event.target.closest("button[data-category]");
+  if (!button) return;
+
+  activeCategory = button.dataset.category;
+  visibleLimit = 24;
+
+  filters.querySelectorAll(".filter").forEach(item => {
+    item.classList.toggle("active", item === button);
+  });
+
+  renderGames();
+});
+
+searchInput.addEventListener("input", () => {
+  visibleLimit = 24;
+  renderGames();
+});
+
+sortSelect.addEventListener("change", () => {
+  visibleLimit = 24;
+  renderGames();
+});
+
+loadMore.addEventListener("click", () => {
+  visibleLimit += 24;
+  renderGames();
+});
+
+resetSearch.addEventListener("click", () => {
+  searchInput.value = "";
+  activeCategory = "All";
+  visibleLimit = 24;
+  sortSelect.value = "default";
+
+  filters.querySelectorAll(".filter").forEach(button => {
+    button.classList.toggle("active", button.dataset.category === "All");
+  });
+
+  renderGames();
+  document.getElementById("games").scrollIntoView({ behavior: "smooth" });
+});
+
+renderGames();
+</script>
+
+</body>
+</html>
